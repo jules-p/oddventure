@@ -17,6 +17,12 @@ class Scene(object):
 	def enter(self):
 		exit(1)
 
+	def user_input(self):
+		choice = raw_input(prompt)
+		lowercase = choice.lower()
+		key_words = lowercase.split(' ')
+		return key_words
+
 
 class Death(Scene):
 
@@ -70,13 +76,7 @@ class WakeRoom(Scene):
 			print "What'll it be, tunnel or ventilation shaft?"
 
 	def action(self):
-		# creating a variable which takes a user input
-		choice = raw_input(prompt)
-		word_list = []
-		# creating a variable which takes the string from choice and returns each split item
-		lowercase = choice.lower()
-		key_words = lowercase.split(' ')
-		# prints the result of that variable
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i in theWheelRoom:
@@ -105,14 +105,10 @@ class WheelRoom(Scene):
 		print message
 
 	def action(self):
-		choice = raw_input(prompt)
-		word_list = []
-		# creating a variable which takes the string from choice and returns each split item
-		lowercase = choice.lower()
-		key_words = lowercase.split(' ')
-		# prints the result of that variable
+
+		key_words = Scene.user_input(self)
+
 		for i in key_words:
-			word_list.append(i)
 			if i in affirm or i in spin:
 				number = random.randint(0,7)
 
@@ -140,13 +136,9 @@ class Child(Scene):
 		print "Hello %s, I hope you've had a pleasant journey so far. In one hand I hold the key to your salvation, in the other, your doom. I wish I could tell you which was which, but only you can decide your fate." % title
 
 	def action(self):
-		choice = raw_input(prompt)
-		word_list = []
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 
 		for i in key_words:
-			word_list.append(i)
 			if i in child_bottle:
 				print bottle_text
 				return Child.either_door(self)
@@ -157,11 +149,9 @@ class Child(Scene):
 		return Child.action(self)
 
 	def either_door(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
-		for i in key_words:
+		key_words = Scene.user_input(self)
 
+		for i in key_words:
 			if i == 'east':
 				print "Looks like we're off to see the Wizard, %s!" % title
 				return 'wizard'
@@ -181,9 +171,8 @@ class SpaceTime(Scene):
 		print space_time_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
+
 		for i in key_words:
 			if i in time_machine:
 				return 'historian'
@@ -206,38 +195,29 @@ class Pixie(Scene):
 		# pixy_woken = False
 
 	def action(self):
-			choice = raw_input(prompt)
-			# convert it to lowercase
-			lower = choice.lower()
-			# split it into a list of individual words
-			key_words = lower.split(' ')
-			
-			for i in key_words:
-				if i in pixieCross1:
-					print "Woah, big mistake %s. Never touch a sleeping pixie. For that matter, never approach any sleeping stranger and start touching them. That's just bad manners." % title
-					return 'death'
-				elif i in pixieHappy1:
-					print "She wakes up. Do you make polite chitchat or just get straight down to business?"
-					
-					choice = raw_input(prompt)
-					lower = choice.lower()
-					key_words = lower.split(' ')
-					for i in key_words:
+		key_words = Scene.user_input(self)
+		for i in key_words:
+			if i in pixieCross1:
+				print "Woah, big mistake %s. Never touch a sleeping pixie. For that matter, never approach any sleeping stranger and start touching them. That's just bad manners." % title
+				return 'death'
+			elif i in pixieHappy1:
+				print "She wakes up. Do you make polite chitchat or just get straight down to business?"
+				
+				key_words = Scene.user_input(self)
+				for i in key_words:
+					if i in pixieCross2:
+						print "Nooo! Haven't you ever heard the saying, \"Never make small-talk with a pixy? They HATE it.\""
+						return 'death'
+					elif i in pixieHappy2:
+						print "Good. Pixies appreciate brevity. She unlocks the door for you."
+						return 'empty_room'	
 
-						if i in pixieCross2:
-							print "Nooo! Haven't you ever heard the saying, \"Never make small-talk with a pixy? They HATE it.\""
-							return 'death'
-						elif i in pixieHappy2:
-							print "Good. Pixies appreciate brevity. She unlocks the door for you."
-							return 'empty_room'	
+				print "What? Bored with your nonesense, she falls back to sleep."
+				print "Let's try this again...whisper in her ear or tap her on the shoulder?"
+				return Pixie.action(self)
 
-					print "What? Bored with your nonesense, she falls back to sleep."
-					print "Let's try this again...whisper in her ear or tap her on the shoulder?"
-					return Pixie.action(self)
-
-			print nonono + title + "."
-			return Pixie.action(self)
-
+		print nonono + title + "."
+		return Pixie.action(self)
 
 
 # Wizard/Sorcerer who presents you with a riddle
@@ -248,11 +228,7 @@ class Wizard(Scene):
 		print wizard_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		word_list = []
-		lowercase = choice.lower()
-		key_words = lowercase.split(' ')
-
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i in affirm:
@@ -297,9 +273,7 @@ class Ninja(Scene):
 		print ninja_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i in affirm:
 				strategy = raw_input("roundhouse to the face or jumping sidekick to the groin? ")
@@ -329,9 +303,7 @@ class Smash(Scene):
 		print "Nice shot! He's stunned, how're you going to finish him: elbow or backfist?"
 
 	def action(self):
-		knockout = raw_input(prompt)
-		lower = knockout.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i == "elbow":
 				print "BOOM! He's down. There's no denying it, you're a badass!"
@@ -370,9 +342,7 @@ class Brutal(Scene):
 		print "\nOuch! He goes flying, but comes back pissed off. Before you know it he's leaping through the air, his foot rapidly approaching your face. Do you jump left, right, or duck?"
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i == "left":
@@ -444,9 +414,7 @@ class Ocean(Scene):
 		print ocean_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i in affirm:
@@ -472,9 +440,7 @@ class Tortoise(Scene):
 		print tortoise_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i == "2012":
@@ -496,9 +462,7 @@ class Overshoot(Scene):
 		print overshoot_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i == "August":
 				print right_ocean_a
@@ -519,10 +483,7 @@ class Greenpeace(Scene):
 		print greenpeace_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
-
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i in greenpeace_a:
 				print right_ocean_a
@@ -539,11 +500,7 @@ class Historian(Scene):
 		print historian_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		# creating a variable which takes the string from choice and returns each split item
-		lower = choice.lower()
-		key_words = lower.split(' ')
-		# prints the result of that variable
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i in affirm:
@@ -570,9 +527,7 @@ class War(Scene):
 		print war_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i == "15th":
 				print wrong_history_a
@@ -592,9 +547,7 @@ class Acidification(Scene):
 		print acidification_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 
 			if i == "200":
@@ -616,9 +569,7 @@ class Poverty(Scene):
 		print poverty_q
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i == "1.50":
 				print wrong_history_a
@@ -640,9 +591,7 @@ class Godot(Scene):
 		print godot_intro
 
 	def action(self):
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i in affirm:
 				print godot_outro
@@ -657,30 +606,16 @@ class Over(Scene):
 
 	def enter(self):
 		print "Play again, or go do something productive with your day?"
-		choice = raw_input(prompt)
-		lower = choice.lower()
-		key_words = lower.split(' ')
+		key_words = Scene.user_input(self)
 		for i in key_words:
 			if i in play_again:
-				return 'wake_room'
+				print wake_room_intro
+				a_map = Map("wake_room")
+				a_game = Engine(a_map)
+				a_game.play()
 			elif i in do_something:
 				print "Good for you! Go be in nature, fall in love, create something, experience some life. "
 				exit(1)
-
-		# print "\nPlay again soon  =)"
-		# exit(1)
-	# 	print "Play again?"
-
-	# def playAgain(WakeRoom):
-	# 	pass
-
-	# def action(self):
-
-	# 	choice = raw_input(prompt)
-	# 	if choice.lower() in affirm:
-	# 		return 'wake_room'
-	# 	else:
-	# 		exit(1)
 
 
 class Map(object):   # Creates a map of the game with a dictionary of Scene instances.
@@ -710,8 +645,6 @@ class Map(object):   # Creates a map of the game with a dictionary of Scene inst
 	'brutal': Brutal(),
 	}
 
-
-
 	def __init__(self, start_scene_key):
 		self.start_scene_key = start_scene_key
 
@@ -722,12 +655,7 @@ class Map(object):   # Creates a map of the game with a dictionary of Scene inst
 	def opening_scene(self):
 		return self.next_scene(self.start_scene_key)
 
-	# def visit(self):
-	# 	self.visit = int(visit)
-	
-
 
 a_map = Map('greeting')   # sets a_map to an instance of class Map, with parameter 'greeting'.
 a_game = Engine(a_map)   # sets a_game to an instance of class Engine, with the parameter 'a_map'
 a_game.play()    # from Engine instance a_game, calls the play() method.
-
