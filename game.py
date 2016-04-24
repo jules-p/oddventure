@@ -23,6 +23,9 @@ class Scene(object):
 		key_words = lowercase.split(' ')
 		return key_words
 
+	def action(self):
+		pass
+
 
 class Death(Scene):
 
